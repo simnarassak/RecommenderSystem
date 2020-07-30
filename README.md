@@ -45,7 +45,8 @@ SVD is used as a collaborative filtering technique. It is a method from linear a
 ratings=pd.read_csv("/Users/ml-latest/ratings.csv")
 movies=pd.read_csv("/Users/ml-latest/movies.csv")
 del ratings['timestamp'] #Removing timestamp as it is not used in this project at this moment
-
+reader = Reader(rating_scale=(1, 5))
+dataset = Dataset.load_from_df(ratings[['userId', 'movieId', 'rating']], reader)
 algorithm1=SVD()
 
 ```
