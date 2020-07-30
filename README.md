@@ -23,3 +23,81 @@ warnings.filterwarnings('ignore')
 
 %matplotlib inline
 ```
+# Model Training
+Read the ratings and movie data into data frame
+
+```python
+ratings=pd.read_csv("/Users/ml-latest/ratings.csv")
+movies=pd.read_csv("/Users/ml-latest/movies.csv")
+del ratings['timestamp']#Removing timestamp as it is not used in this project at this moment
+```
+The are two major recommendor approaches-
+1. Content based filtering
+
+The similarity is identified based on the attributes and products. In the case of movies content based filter uses genres, production house, directors, actors
+
+2. Collaborative filtering
+
+It is based on the users past behaviour and similar decision or choices made by other users
+
+Singular Value Decomposition (SVD)
+
+SVD is used as a collaborative filtering technique. It is a method from linear algebra that has been generally used as a dimensionality reduction technique in machine learning. SVD is a matrix factorisation technique.
+
+```python
+algorithm1=SVD()
+
+```
+Cross-validation is primarily used in applied machine learning to estimate model performance. It gives a less biased or less optimistic estimate of the model performance. Only top 100k data is used for cross validation
+
+```python
+cross_validate(algorithm1,d,measures=['RMSE','MAE'],cv=5,verbose=True)
+
+```
+
+25% the data is used as test and remaining as the training set to generate a model
+
+```python
+traindata,testdata=train_test_split(dataset,test_size=0.25)
+```
+The algorithm is trained using train data. Prediction is made on test data using the train model. The algorithm gives an accuracy of 79.8%
+
+```python
+algorithm1.fit(traindata)
+predict=algorithm1.test(testdata)
+accuracy.rmse(predict)
+
+```
+# Recommendation
+Now let use this model for some real recommendation.
+
+Using this model a recommendation is made for any selected user. A user input is used to review the user previous movie rating. From the previous history of the user a new set of movies are recommended. The recommendation is based on the estimated score from the model using customer behaviour.
+
+```python
+#Select a user by giving a user Id
+Idu=input("Enter the user Id:")
+user_Id=int(Idu)
+```
+Now we will look into historical data for identifying the user behaviour 
+
+```python
+#user previous views
+user=ratings[(ratings['userId']==user_Id)&(ratings['rating']<=4)]
+user=user.set_index('movieId')
+user=user.join(movies)['title']
+print(user)
+
+```
+Now the model knows a pattern of the given user's move review, thus it can give a recommendation for the user
+
+```python
+
+#Recommendation for user
+user=movies.copy()
+user=user.reset_index()
+user['Estimate Score']=user['movieId'].apply(lambda x:algorithm1.predict(user_Id,x).est)
+user=user.drop('movieId',axis=1)
+user=user.sort_values('Estimate Score',ascending=False)
+print(user.head(5))
+
+```
