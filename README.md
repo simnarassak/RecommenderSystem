@@ -1,6 +1,6 @@
 # RecommenderSystem
 A simple movie recommendation system with collaborative filter using python code
-Recommendation or Recommender system is one of the most used application data science. The system employs statistical algorithm that help to predict using user rating, review or view etc.The system assume that, it is highly likely for users to have similar kind of review/rating for a set of entities. Netflix, Amazon, Facebook, YouTube etc. uses recommender system in one way or the other way to increase the customer base for their products.
+Recommendation or Recommender system is one of the most used application data science. The system employs statistical algorithm that help to predict using user rating, review or view etc.The system assume that, it is highly likely for users to have similar kind of review/rating for a set of entities. Netflix, Amazon, Facebook, YouTube etc. uses recommender system in one way or the other way to increase their customer base or the products.
 
 In this project a simple recommendation system is developed using movie rating data from MovieLens. I have used the latest dataset "ml-latest". It has 27,000,000 ratings and 1,100,000 tag applications applied to 58,000 movies by 280,000 users. Includes tag genome data with 14 million relevance scores across 1,100 tags. 
 
@@ -24,17 +24,12 @@ warnings.filterwarnings('ignore')
 %matplotlib inline
 ```
 ### Model Training
-Read the ratings and movie data into data frame
 
-```python
-ratings=pd.read_csv("/Users/ml-latest/ratings.csv")
-movies=pd.read_csv("/Users/ml-latest/movies.csv")
-del ratings['timestamp']#Removing timestamp as it is not used in this project at this moment
-```
 The are two major recommendor approaches-
 1. Content based filtering
 
-The similarity is identified based on the attributes and products. In the case of movies content based filter uses genres, production house, directors, actors
+This method uses the similarity based on the attributes and products. 
+In the case of movies content based filter uses genres, production house, directors, actors
 
 2. Collaborative filtering
 
@@ -44,13 +39,21 @@ Singular Value Decomposition (SVD)
 
 SVD is used as a collaborative filtering technique. It is a method from linear algebra that has been generally used as a dimensionality reduction technique in machine learning. SVD is a matrix factorisation technique.
 
+
 ```python
+#Read the ratings and movie data into data frame
+ratings=pd.read_csv("/Users/ml-latest/ratings.csv")
+movies=pd.read_csv("/Users/ml-latest/movies.csv")
+del ratings['timestamp'] #Removing timestamp as it is not used in this project at this moment
+
 algorithm1=SVD()
 
 ```
-Cross-validation is primarily used in applied machine learning to estimate model performance. It gives a less biased or less optimistic estimate of the model performance. Only top 100k data is used for cross validation
+
+Cross-validation is primarily used in machine learning to estimate model performance. It gives a less biased or less optimistic estimate of the model performance. In this project only top 100k data is used for cross validation
 
 ```python
+
 cross_validate(algorithm1,d,measures=['RMSE','MAE'],cv=5,verbose=True)
 
 ```
@@ -60,7 +63,7 @@ cross_validate(algorithm1,d,measures=['RMSE','MAE'],cv=5,verbose=True)
 ```python
 traindata,testdata=train_test_split(dataset,test_size=0.25)
 ```
-The algorithm is trained using train data. Prediction is made on test data using the train model. The algorithm gives an accuracy of 79.8%
+The model is developed using train data. Then a prediction test is done on the 25% test data. The test results shows that the model has an accuracy of 79.8%. 
 
 ```python
 algorithm1.fit(traindata)
@@ -71,7 +74,7 @@ accuracy.rmse(predict)
 ### Recommendation
 Now let use this model for some real recommendation.
 
-Using this model a recommendation is made for any selected user. A user input is used to review the user previous movie rating. From the previous history of the user a new set of movies are recommended. The recommendation is based on the estimated score from the model using customer behaviour.
+First I give an option to select user by entering user id. Then the id is used to review the user's previous movie rating patterns. From the previous history of the user, a new set of movies are recommended. An estimated score from the model using customer behaviour is used to give the recommendation.
 
 ```python
 #Select a user by giving a user Id
