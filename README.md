@@ -1,4 +1,4 @@
-## RecommenderSystem
+# RecommenderSystem
 A simple movie recommendation system with collaborative filter using python code
 Recommendation or Recommender system is one of the most used application data science. The system employs statistical algorithm that help to predict using user rating, review or view etc.The system assume that, it is highly likely for users to have similar kind of review/rating for a set of entities. Netflix, Amazon, Facebook, YouTube etc. uses recommender system in one way or the other way to increase the customer base for their products.
 
@@ -6,7 +6,7 @@ In this project a simple recommendation system is developed using movie rating d
 
 import all the packages required for the project
 
-# Python Packages
+### Python Packages
 ```python
 import numpy as np
 from surprise import SVD
@@ -23,7 +23,7 @@ warnings.filterwarnings('ignore')
 
 %matplotlib inline
 ```
-# Model Training
+### Model Training
 Read the ratings and movie data into data frame
 
 ```python
@@ -68,7 +68,7 @@ predict=algorithm1.test(testdata)
 accuracy.rmse(predict)
 
 ```
-# Recommendation
+### Recommendation
 Now let use this model for some real recommendation.
 
 Using this model a recommendation is made for any selected user. A user input is used to review the user previous movie rating. From the previous history of the user a new set of movies are recommended. The recommendation is based on the estimated score from the model using customer behaviour.
